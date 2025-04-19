@@ -1,0 +1,81 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Base colors */
+    --background: 220 10% 7%;
+    --foreground: 0 0% 95%;
+    
+    /* Primary colors - Rust/Orange theme */
+    --primary: 28 100% 50%;
+    --primary-foreground: 0 0% 100%;
+    
+    /* Card colors */
+    --card: 222 8% 13%;
+    --card-foreground: 0 0% 95%;
+    
+    /* Popover colors */
+    --popover: 222 10% 10%;
+    --popover-foreground: 0 0% 95%;
+    
+    /* Secondary colors */
+    --secondary: 220 10% 15%;
+    --secondary-foreground: 0 0% 95%;
+    
+    /* Muted colors */
+    --muted: 220 10% 15%;
+    --muted-foreground: 220 10% 60%;
+    
+    /* Accent colors */
+    --accent: 28 100% 50%;
+    --accent-foreground: 0 0% 10%;
+    
+    /* Destructive */
+    --destructive: 0 100% 50%;
+    --destructive-foreground: 0 0% 95%;
+    
+    /* Border and other UI elements */
+    --border: 220 10% 20%;
+    --input: 220 10% 20%;
+    --ring: 28 100% 50%;
+    
+    /* Chart colors */
+    --chart-1: 28 100% 50%;
+    --chart-2: 220 100% 50%;
+    --chart-3: 120 100% 50%;
+    --chart-4: 300 100% 50%;
+    --chart-5: 40 100% 50%;
+
+    /* Sidebar colors */
+    --sidebar-background: 220 10% 8%;
+    --sidebar-foreground: 0 0% 95%;
+    --sidebar-primary: 28 100% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 28 100% 50%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 220 10% 15%;
+    --sidebar-ring: 28 100% 50%;
+    
+    /* UI radius */
+    --radius: 0.5rem;
+  }
+  
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+  }
+
+  /* Navigation Card transitions */
+  .nav-card {
+    @apply transition-all duration-200 ease-in-out;
+  }
+  
+  .nav-card:hover {
+    @apply transform -translate-y-1 shadow-lg;
+  }
+}
