@@ -16,6 +16,7 @@ import Store from "@/pages/store";
 import SubmitSkins from "@/pages/submit-skins";
 import Contact from "@/pages/contact";
 import AuthPage from "@/pages/auth-page";
+import JoinServer from "@/pages/join";
 
 function Router() {
   return (
@@ -26,6 +27,7 @@ function Router() {
       <Route path="/changelog" component={Changelog} />
       <Route path="/store" component={Store} />
       <Route path="/auth" component={AuthPage} />
+      <Route path="/join" component={JoinServer} />
       <ProtectedRoute path="/submit-skins" component={SubmitSkins} />
       <Route path="/contact" component={Contact} />
       {/* Fallback to 404 */}
