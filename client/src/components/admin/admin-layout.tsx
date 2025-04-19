@@ -144,7 +144,7 @@ const AdminLayout: FC<AdminLayoutProps> = ({
                 const [isActive] = useRoute(link.href);
                 
                 // Check if user has permission to see this link
-                if (link.requiredRole && !hasPermission(user.role, link.requiredRole)) {
+                if (link.requiredRole && (!user.role || !hasPermission(user.role, link.requiredRole))) {
                   return null;
                 }
                 
