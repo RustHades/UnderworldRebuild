@@ -8,7 +8,6 @@ import { storage } from "./storage";
 import { User as UserType, insertUserSchema } from "@shared/schema";
 import { ZodError } from "zod";
 import { fromZodError } from "zod-validation-error";
-import createMemoryStore from "memorystore";
 
 declare global {
   namespace Express {
@@ -17,7 +16,6 @@ declare global {
 }
 
 const scryptAsync = promisify(scrypt);
-const MemoryStore = createMemoryStore(session);
 
 // Password hashing
 async function hashPassword(password: string): Promise<string> {
@@ -40,11 +38,9 @@ export function setupAuth(app: Express) {
     resave: false,
     saveUninitialized: false,
     cookie: {
-      maxAge: 1000 * 60 * 60 * 24, // 1 day
+      maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
     },
-    store: new MemoryStore({
-      checkPeriod: 86400000, // prune expired entries every 24h
-    }),
+    store: storage.sessionStore,
   };
 
   app.use(session(sessionConfig));
