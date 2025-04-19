@@ -1,5 +1,6 @@
-import { FC, ReactNode } from "react";
-import { useLocation, Link, useRoute } from "wouter";
+import { FC } from "react";
+import { useLocation, useRoute } from "wouter";
+import { Link } from "wouter";
 import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -25,7 +26,33 @@ import {
   Server,
   ShoppingBag,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, ReactNode } from "react";
+
+// Function to render the icon based on the icon name
+const renderIcon = (iconName: string) => {
+  const iconClassName = "h-4 w-4";
+  
+  switch (iconName) {
+    case "LayoutDashboard":
+      return <LayoutDashboard className={iconClassName} />;
+    case "Users":
+      return <Users className={iconClassName} />;
+    case "FileText":
+      return <FileText className={iconClassName} />;
+    case "MessageCircle":
+      return <MessageCircle className={iconClassName} />;
+    case "Image":
+      return <ImageIcon className={iconClassName} />;
+    case "Link":
+      return <LinkIcon className={iconClassName} />;
+    case "Server":
+      return <Server className={iconClassName} />;
+    case "ShoppingBag":
+      return <ShoppingBag className={iconClassName} />;
+    default:
+      return <FileText className={iconClassName} />;
+  }
+};
 
 interface AdminLayoutProps {
   children: ReactNode;
@@ -60,7 +87,7 @@ const AdminLayout: FC<AdminLayoutProps> = ({
   };
   
   // Check if user has access to the admin section
-  if (!hasPermission(user.role, "admin")) {
+  if (!user.role || !hasPermission(user.role, "admin")) {
     return (
       <div className="min-h-screen flex flex-col">
         <SiteHeader />
@@ -153,7 +180,7 @@ const AdminLayout: FC<AdminLayoutProps> = ({
                     {user.displayName || user.username}
                   </h3>
                   <p className="text-xs text-foreground/70 truncate">
-                    {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
+                    {user.role ? user.role.charAt(0).toUpperCase() + user.role.slice(1) : 'User'}
                   </p>
                 </div>
               )}

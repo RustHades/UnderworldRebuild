@@ -17,6 +17,7 @@ import SubmitSkins from "@/pages/submit-skins";
 import Contact from "@/pages/contact";
 import AuthPage from "@/pages/auth-page";
 import JoinServer from "@/pages/join";
+import AdminDashboard from "@/pages/admin/dashboard";
 
 function Router() {
   return (
@@ -30,6 +31,8 @@ function Router() {
       <Route path="/join" component={JoinServer} />
       <ProtectedRoute path="/submit-skins" component={SubmitSkins} />
       <Route path="/contact" component={Contact} />
+      {/* Admin Routes */}
+      <ProtectedRoute path="/admin" component={AdminDashboard} />
       {/* Fallback to 404 */}
       <Route component={NotFound} />
     </Switch>
