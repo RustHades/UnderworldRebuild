@@ -83,12 +83,23 @@ export class MemStorage implements IStorage {
   async insertContact(insertContact: InsertContact): Promise<Contact> {
     const id = this.contactIdCounter++;
     const now = new Date();
+    
+    // Handle optional fields for proper typing
+    const steamId = insertContact.steamId || null;
+    const discordId = insertContact.discordId || null;
+    
     const contact: Contact = { 
-      ...insertContact, 
       id,
+      name: insertContact.name,
+      email: insertContact.email,
+      steamId,
+      discordId,
+      subject: insertContact.subject,
+      message: insertContact.message,
       createdAt: now,
       isResolved: false
     };
+    
     this.contacts.set(id, contact);
     return contact;
   }
