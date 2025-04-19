@@ -4,12 +4,19 @@ import { storage } from "./storage";
 import { insertSkinSchema, insertContactSchema } from "@shared/schema";
 import { ZodError } from "zod";
 import { fromZodError } from "zod-validation-error";
+import { setupAuth } from "./auth";
 
 export async function registerRoutes(app: Express): Promise<Server> {
-  // prefix all routes with /api
+  // Authentication routes
+  setupAuth(app);
   
   // Submit skin request endpoint
   app.post("/api/submit-skin", async (req, res) => {
+    // Check if user is authenticated
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: "Authentication required" });
+    }
+    
     try {
       const validatedData = insertSkinSchema.parse(req.body);
       const result = await storage.insertSkin(validatedData);
