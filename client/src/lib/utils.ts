@@ -5,6 +5,22 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+// Role-based permission check function
+export function hasPermission(userRole: string | null, requiredRole: string): boolean {
+  // Root role overrules all permissions
+  if (userRole === "root") return true;
+  
+  // If user has no role or the role doesn't exist in hierarchy, deny access
+  if (!userRole || !(userRole in roleHierarchy)) return false;
+  
+  // If required role doesn't exist in hierarchy, deny access
+  if (!(requiredRole in roleHierarchy)) return false;
+  
+  // Check if user's role has sufficient permission level
+  return roleHierarchy[userRole as keyof typeof roleHierarchy] >= 
+         roleHierarchy[requiredRole as keyof typeof roleHierarchy];
+}
+
 // Navigation data for the site
 export const navigationLinks = [
   { href: "/", label: "Home" },
@@ -15,6 +31,26 @@ export const navigationLinks = [
   { href: "/submit-skins", label: "Submit Skins" },
   { href: "/contact", label: "Contact" },
 ];
+
+// Admin/moderator navigation links with required permissions
+export const adminNavigationLinks = [
+  { href: "/admin/dashboard", label: "Admin Dashboard", requiredRole: "admin" },
+  { href: "/admin/users", label: "Manage Users", requiredRole: "admin" },
+  { href: "/admin/skins", label: "Skin Submissions", requiredRole: "moderator" },
+  { href: "/admin/contacts", label: "Contact Requests", requiredRole: "moderator" },
+  { href: "/admin/store", label: "Store Management", requiredRole: "admin" },
+  { href: "/admin/content", label: "Content Editor", requiredRole: "admin" },
+];
+
+// Role hierarchy for permission checking
+export const roleHierarchy = {
+  "root": 100,    // Highest level, overrides all permissions
+  "admin": 80,    // Admin level access
+  "moderator": 60, // Moderator privileges
+  "vip": 40,      // VIP user status
+  "user": 20,     // Normal authenticated user
+  "guest": 0      // Unauthenticated user
+};
 
 // Navigation cards data
 export const navigationCards = [

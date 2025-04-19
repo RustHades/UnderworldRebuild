@@ -3,7 +3,8 @@ import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
-import { navigationLinks } from "@/lib/utils";
+import { navigationLinks, adminNavigationLinks, hasPermission } from "@/lib/utils";
+import { useAuth } from "@/hooks/use-auth";
 
 interface MobileNavProps {
   isOpen: boolean;
@@ -12,8 +13,24 @@ interface MobileNavProps {
 
 const MobileNav = ({ isOpen, onClose }: MobileNavProps) => {
   const [location] = useLocation();
-  // For demo purposes - in real implementation this would come from useAuth hook
-  const isLoggedIn = false;
+  const { user, logoutMutation } = useAuth();
+  
+  // Get user's initials for avatar fallback
+  const getInitials = () => {
+    if (!user || !user.displayName) return "UR";
+    const nameParts = user.displayName.split(" ");
+    if (nameParts.length >= 2) {
+      return `${nameParts[0][0]}${nameParts[1][0]}`.toUpperCase();
+    }
+    return nameParts[0].substring(0, 2).toUpperCase();
+  };
+  
+  // Handle logout
+  const handleLogout = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    await logoutMutation.mutateAsync();
+    onClose();
+  };
   
   // Close mobile nav when location changes
   useEffect(() => {
@@ -43,7 +60,7 @@ const MobileNav = ({ isOpen, onClose }: MobileNavProps) => {
       onClick={onClose}
     >
       <div 
-        className="bg-card w-64 h-full overflow-y-auto animate-in slide-in-from-left duration-300"
+        className="bg-card w-4/5 max-w-[300px] h-full overflow-y-auto animate-in slide-in-from-left duration-300"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="p-4 border-b border-border">
@@ -60,16 +77,26 @@ const MobileNav = ({ isOpen, onClose }: MobileNavProps) => {
         </div>
         
         {/* User profile section */}
-        {isLoggedIn ? (
+        {user ? (
           <div className="p-4 border-b border-border">
             <div className="flex items-center gap-3">
               <Avatar>
-                <AvatarImage src="/avatars/default.png" alt="User avatar" />
-                <AvatarFallback className="bg-primary/10 text-primary">UR</AvatarFallback>
+                <AvatarImage 
+                  src={user.avatarUrl || undefined} 
+                  alt={`${user.displayName || user.username}'s avatar`} 
+                />
+                <AvatarFallback className="bg-primary/10 text-primary">
+                  {getInitials()}
+                </AvatarFallback>
               </Avatar>
               <div>
-                <div className="font-medium">username</div>
-                <div className="text-sm text-muted-foreground">user@example.com</div>
+                <div className="font-medium">{user.displayName || user.username}</div>
+                <div className="text-sm text-muted-foreground">{user.email}</div>
+                {user.role && (
+                  <div className="text-xs mt-1 bg-primary/10 text-primary rounded-full px-2 py-0.5 inline-block">
+                    {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -107,8 +134,38 @@ const MobileNav = ({ isOpen, onClose }: MobileNavProps) => {
           </nav>
         </div>
         
+        {/* Admin navigation - only show if user has proper role */}
+        {user && user.role && adminNavigationLinks.some(link => 
+          hasPermission(user.role, link.requiredRole)
+        ) && (
+          <div className="p-4 border-t border-border">
+            <div className="text-sm font-medium text-muted-foreground mb-2">ADMIN</div>
+            <nav>
+              <ul className="space-y-1">
+                {adminNavigationLinks
+                  .filter(link => hasPermission(user.role, link.requiredRole))
+                  .map(link => (
+                    <li key={link.href}>
+                      <Link href={link.href}>
+                        <div className={`flex items-center gap-3 p-2 rounded-md transition-colors cursor-pointer ${
+                          location === link.href
+                            ? "bg-secondary text-primary"
+                            : "hover:bg-secondary"
+                        }`}>
+                          <i className={`${getIconForAdminLink(link.label)} text-primary`}></i>
+                          <span>{link.label}</span>
+                        </div>
+                      </Link>
+                    </li>
+                  ))
+                }
+              </ul>
+            </nav>
+          </div>
+        )}
+        
         {/* Account settings for logged in users */}
-        {isLoggedIn && (
+        {user && (
           <div className="p-4 border-t border-border">
             <div className="text-sm font-medium text-muted-foreground mb-2">ACCOUNT</div>
             <nav>
@@ -130,12 +187,12 @@ const MobileNav = ({ isOpen, onClose }: MobileNavProps) => {
                   </Link>
                 </li>
                 <li>
-                  <Link href="/api/logout">
+                  <a href="#" onClick={handleLogout}>
                     <div className="flex items-center gap-3 p-2 rounded-md transition-colors cursor-pointer hover:bg-secondary text-red-500">
                       <i className="fas fa-sign-out-alt"></i>
                       <span>Logout</span>
                     </div>
-                  </Link>
+                  </a>
                 </li>
               </ul>
             </nav>
@@ -143,7 +200,7 @@ const MobileNav = ({ isOpen, onClose }: MobileNavProps) => {
         )}
         
         {/* Join server button */}
-        <div className="p-4 mt-4">
+        <div className="p-4 mt-2">
           <Link href="/join">
             <div className="cursor-pointer">
               <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
@@ -177,6 +234,26 @@ function getIconForLink(label: string): string {
       return "fas fa-envelope";
     default:
       return "fas fa-link";
+  }
+}
+
+// Helper function to get icons for admin links
+function getIconForAdminLink(label: string): string {
+  switch (label) {
+    case "Admin Dashboard":
+      return "fas fa-tachometer-alt";
+    case "Manage Users":
+      return "fas fa-users-cog";
+    case "Skin Submissions":
+      return "fas fa-tshirt";
+    case "Contact Requests":
+      return "fas fa-envelope";
+    case "Store Management":
+      return "fas fa-shopping-cart";
+    case "Content Editor":
+      return "fas fa-edit";
+    default:
+      return "fas fa-cog";
   }
 }
 
