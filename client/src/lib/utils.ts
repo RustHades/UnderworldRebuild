@@ -1,5 +1,15 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { 
+  LayoutDashboard, 
+  Users, 
+  ShoppingBag, 
+  FileText, 
+  Image, 
+  MessageCircle, 
+  Link, 
+  Server 
+} from "lucide-react";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -34,12 +44,60 @@ export const navigationLinks = [
 
 // Admin/moderator navigation links with required permissions
 export const adminNavigationLinks = [
-  { href: "/admin/dashboard", label: "Admin Dashboard", requiredRole: "admin" },
-  { href: "/admin/users", label: "Manage Users", requiredRole: "admin" },
-  { href: "/admin/skins", label: "Skin Submissions", requiredRole: "moderator" },
-  { href: "/admin/contacts", label: "Contact Requests", requiredRole: "moderator" },
-  { href: "/admin/store", label: "Store Management", requiredRole: "admin" },
-  { href: "/admin/content", label: "Content Editor", requiredRole: "admin" },
+  { 
+    href: "/admin/dashboard", 
+    label: "Dashboard", 
+    requiredRole: "admin",
+    icon: "LayoutDashboard"
+  },
+  { 
+    href: "/admin/users", 
+    label: "Users", 
+    requiredRole: "admin",
+    icon: "Users"
+  },
+  { 
+    href: "/admin/skins", 
+    label: "Skin Submissions", 
+    requiredRole: "moderator",
+    icon: "FileText"
+  },
+  { 
+    href: "/admin/contacts", 
+    label: "Contact Requests", 
+    requiredRole: "moderator",
+    icon: "MessageCircle"
+  },
+  { 
+    href: "/admin/gallery", 
+    label: "Gallery", 
+    requiredRole: "moderator",
+    icon: "Image"
+  },
+  { 
+    href: "/admin/discord", 
+    label: "Discord Links", 
+    requiredRole: "admin",
+    icon: "Link"
+  },
+  { 
+    href: "/admin/servers", 
+    label: "Game Servers", 
+    requiredRole: "admin",
+    icon: "Server"
+  },
+  { 
+    href: "/admin/store", 
+    label: "Store", 
+    requiredRole: "admin",
+    icon: "ShoppingBag"
+  },
+  { 
+    href: "/admin/changelog", 
+    label: "Changelog", 
+    requiredRole: "admin",
+    icon: "FileText"
+  },
 ];
 
 // Role hierarchy for permission checking

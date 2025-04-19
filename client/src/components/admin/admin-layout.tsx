@@ -17,6 +17,13 @@ import {
   Settings,
   LogOut,
   User,
+  Users,
+  FileText,
+  MessageCircle,
+  Image as ImageIcon,
+  Link as LinkIcon,
+  Server,
+  ShoppingBag,
 } from "lucide-react";
 import { useState } from "react";
 
@@ -127,7 +134,9 @@ const AdminLayout: FC<AdminLayoutProps> = ({
                     )}
                   >
                     {link.icon && (
-                      <span className="mr-3">{link.icon}</span>
+                      <span className="mr-3">
+                        {renderIcon(link.icon)}
+                      </span>
                     )}
                     {!sidebarCollapsed && <span>{link.label}</span>}
                   </Link>
