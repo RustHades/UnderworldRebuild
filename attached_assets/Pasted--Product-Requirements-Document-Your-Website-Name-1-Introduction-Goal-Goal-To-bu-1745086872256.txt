@@ -1,0 +1,75 @@
+# Product Requirements Document: [Your Website Name]
+
+## 1. Introduction & Goal
+
+**Goal:** To build/rebuild [Your Website Name], a platform designed to [Briefly describe the primary purpose of the website, e.g., showcase products, provide information, facilitate user interaction, etc.]. This document outlines the functional and non-functional requirements for the website, intended for use by an AI coding assistant during development.
+
+**Current State:** [Briefly describe the current state - e.g., "New project," "Existing website needing a rebuild," "Specific features to be added."]
+
+**Success Metrics:** [List key metrics, e.g., User engagement, Conversion rate, Task completion rate, Page load speed.]
+
+## 2. Target Audience
+
+*   **Primary Audience:** [Describe the main users, e.g., Potential customers, Existing clients, General public, Specific demographic.]
+*   **Secondary Audience:** [Describe any other user groups, e.g., Administrators, Content creators.]
+
+## 3. Core Features
+
+This section details the essential functionalities required for the website.
+
+### 3.1 User Authentication (If Applicable)
+*   User registration (Email/Password, Social Login - specify providers if known)
+*   User login/logout
+*   Password recovery
+*   User profile management (e.g., update details, view history)
+
+### 3.2 Content Display
+*   **Homepage:** [Describe key sections: Hero, Feature overview, Call-to-actions, etc.]
+*   **About Page:** Information about the entity/company.
+*   **Product/Service Pages:** Detailed views of offerings. [Specify structure if known, e.g., image gallery, description, pricing, specs.]
+*   **Blog/Articles Section:** List view and individual article view. Support for categories/tags.
+*   **Contact Page:** Contact form, contact details, map (optional).
+
+### 3.3 Interaction Features
+*   **Search Functionality:** Site-wide search for content/products.
+*   **Forms:** Contact forms, subscription forms, etc. (Specify required fields and validation).
+*   **User-Generated Content (If Applicable):** Comments, reviews, forum posts. (Specify moderation needs).
+
+### 3.4 Administrative Features (If Applicable)
+*   Content management system (CMS) interface for adding/editing pages, blog posts, products, etc.
+*   User management dashboard.
+*   Analytics overview.
+
+*(Add/remove/modify features based on your specific website needs)*
+
+## 4. Non-Functional Requirements
+
+*   **Performance:** Fast page load times (Target < 2 seconds for LCP). Optimized images and assets. Efficient data fetching.
+*   **Responsiveness:** Fully responsive design adapting seamlessly to desktop, tablet, and mobile devices.
+*   **Accessibility:** Adherence to WCAG 2.1 AA standards. Keyboard navigation, screen reader compatibility, sufficient color contrast.
+*   **Security:** Protection against common web vulnerabilities (XSS, CSRF, SQL Injection). Secure handling of user data. Use of HTTPS.
+*   **SEO:** Basic SEO optimization (semantic HTML, meta tags, clean URLs, sitemap generation).
+
+## 5. UI/UX Design
+
+*   **Component Library:** The UI MUST be built using **shadcn/ui**. Utilize its components for building blocks like buttons, forms, modals, navigation, etc.
+*   **Visual Style:** [Describe the desired look and feel - e.g., Minimalist, Professional, Playful, Brand colors (provide hex codes if available)]. Maintain consistency across all pages.
+*   **Layout:** [Describe general layout principles - e.g., Header/Footer structure, Sidebar usage, Grid system preferences.]
+*   **User Experience:** Intuitive navigation, clear calls to action, predictable user flows. Minimize user friction.
+
+## 6. Technology Constraints
+
+*   **Frontend UI Components:** MUST use **shadcn/ui**.
+*   **Core Framework/Backend:** This PRD is **agnostic** regarding the specific backend language, framework (e.g., React, Vue, Svelte, Angular for frontend; Node.js, Python, Ruby, PHP for backend), or database. The implementation should choose technologies suitable for the features described, prioritizing maintainability, scalability, and performance.
+*   **Deployment:** [Specify any known deployment constraints or preferences, e.g., Target platform (Vercel, Netlify, AWS), CI/CD requirements.]
+
+## 7. Future Considerations
+
+*   [List potential future features or enhancements, e.g., E-commerce integration, Multi-language support, Advanced user roles.]
+
+## 8. Open Questions
+
+*   [List any aspects requiring further clarification or decision.]
+
+---
+*This PRD is a living document and may be updated as requirements evolve.* 
